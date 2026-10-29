@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Screening Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <p class="eyebrow">SCREENING REPORT</p>
+
+        <h1>Resume Screening Results</h1>
+        <p class="subtitle">
+            Review the text similarity score and skills identified in your resume.
+        </p>
+
+        <section class="result-card">
+            <h2>Uploaded Resume</h2>
+            <p class="filename">{{ filename }}</p>
+
+            <h2>Resume Match Score</h2>
+            <p class="result-score">{{ match_percentage }}%</p>
+
+            <div class="progress-track"
+                 role="progressbar"
+                 aria-label="Resume text similarity"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 aria-valuenow="{{ match_percentage }}">
+                <div class="progress-fill"
+                     style="width: {{ match_percentage }}%;">
+                </div>
+            </div>
+
+            <p class="note">
+                This score represents text similarity, not the probability
+                of getting hired.
+            </p>
+        </section>
+
+        <div class="skills-grid">
+            <section class="skill-card">
+                <h2>✓ Matched Skills</h2>
+
+                {% if matched_skills %}
+                    <ul class="skill-list">
+                        {% for skill in matched_skills %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No matching skills found in the supported list.</p>
+                {% endif %}
+            </section>
+
+            <section class="skill-card">
+                <h2>＋ Skills to Review</h2>
+
+                {% if missing_skills %}
+                    <ul class="skill-list">
+                        {% for skill in missing_skills %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No additional skills identified from the supported list.</p>
+                {% endif %}
+            </section>
+        </div>
+
+        <section class="result-card">
+            <h2>Extracted Resume Text</h2>
+            <pre>{{ resume_text }}</pre>
+        </section>
+
+        <form action="/download-report" method="POST">
+            <input type="hidden" name="filename" value="{{ filename }}">
+            <input type="hidden" name="match_percentage" value="{{ match_percentage }}">
+
+            {% for skill in matched_skills %}
+                <input type="hidden" name="matched_skills" value="{{ skill }}">
+            {% endfor %}
+
+            {% for skill in missing_skills %}
+                <input type="hidden" name="missing_skills" value="{{ skill }}">
+            {% endfor %}
+
+            <button type="submit">Download Screening Report ↓</button>
+        </form>
+
+        <p class="back-link">
+            <a href="/">← Screen Another Resume</a>
+        </p>
+
+        <p class="footer-note">
+            Automated results are estimates and should not be used as the sole
+            basis for hiring decisions.
+        </p>
+    </div>
+</body>
+</html>

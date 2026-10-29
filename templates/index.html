@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Screening System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <p style="text-align:center; color:#4338ca; font-weight:bold;">
+            SMART RECRUITMENT TOOL
+        </p>
+
+        <h1>AI Resume Screening System</h1>
+
+        <p class="subtitle">
+            Simplify resume screening with intelligent text matching
+            and skill analysis.
+        </p>
+
+        <form action="/screen" method="POST" enctype="multipart/form-data">
+
+            <h2>Step 1: Upload Your Resume</h2>
+            <p>Select your resume in PDF format (maximum 5 MB).</p>
+
+            <input
+                type="file"
+                name="resume"
+                accept=".pdf,application/pdf"
+                required
+            >
+
+            <h2>Step 2: Add Job Description</h2>
+            <p>Paste the job requirements you want to compare against.</p>
+
+            <textarea
+                name="job_description"
+                rows="8"
+                placeholder="Example: We are looking for a Python developer with knowledge of Flask, SQL, HTML, CSS and machine learning..."
+                required
+            ></textarea>
+
+            <button type="submit">Screen Resume →</button>
+        </form>
+
+        <p class="subtitle" style="margin-top:25px; margin-bottom:0;">
+            Your results include text similarity, matched skills
+            and missing skills.
+        </p>
+
+        <p style="text-align:center; font-size:12px; color:#64748b;">
+            Note: Results are automated estimates, not a hiring decision.
+        </p>
+    </div>
+</body>
+</html>
